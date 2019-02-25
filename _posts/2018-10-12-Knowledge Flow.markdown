@@ -7,8 +7,10 @@ tags: 感悟 深度学习
 excerpt: 第一篇文章吧
 mathjax: true
 ---
+* content
+{:toc}
 
-# 2018-10-12 Knowledge Flow
+# Knowledge Flow
 
 Wisdom flowing form old to young and yound to old
 
