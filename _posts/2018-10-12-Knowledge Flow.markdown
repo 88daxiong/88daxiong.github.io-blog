@@ -2,8 +2,8 @@
 layout: post
 title:  "Knowledge Flow"
 date:   2019-02-25 22:26:23
-categories: jekyll
-tags: jekyll
+categories: 深度学习
+tags: 感悟，深度学习
 excerpt: 第一篇文章吧
 mathjax: true
 ---
