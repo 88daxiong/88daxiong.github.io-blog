@@ -7,7 +7,7 @@
 
 # Site settings
 title: dingxiong
-brief-intro: Front-end Dev Engineer
+brief-intro: Stay Hungry,Stay Foolish
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://88daxiong.github.io/" # the base hostname & protocol for your site
 
@@ -23,7 +23,7 @@ zhihu_username:
 linkedIn_username: 
 dribbble_username:
 
-description_footer: Life Happens, Enjoy
+description_footer: Life is like a box of chocolates
 
 # Build settings
 markdown: kramdown
