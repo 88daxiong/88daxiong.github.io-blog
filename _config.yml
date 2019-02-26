@@ -7,7 +7,7 @@
 
 # Site settings
 title: daxiong
-brief-intro: Stay Hungry,Stay Foolish
+brief-intro: Stay Hungry, Stay Foolish
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://88daxiong.github.io/" # the base hostname & protocol for your site
 
@@ -16,10 +16,10 @@ permalink: /:year/:month/:day/:title/
 # other links
 twitter_username:
 facebook_username: profile.php?id=100008590683223
-github_username:  
-email: 
+github_username:  88daxiong
+email: dingxiong@iie.ac.cn
 weibo_username: 
-zhihu_username: 
+zhihu_username: ding_xiong
 linkedIn_username: 
 dribbble_username:
 
