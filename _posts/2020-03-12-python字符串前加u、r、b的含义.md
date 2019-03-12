@@ -26,7 +26,7 @@ mathjax: true
 常用于正则表达式，对应着re模块。
 
 ## 0x3 字符前加b
-例: response = b'<h1>Hello World!</h1>'     # b' ' 表示这是一个 bytes 对象
+例: response = b'Hello World!'     # b' ' 表示这是一个 bytes 对象
 作用：
 b" "前缀表示：后面字符串是bytes 类型。
 用处：
