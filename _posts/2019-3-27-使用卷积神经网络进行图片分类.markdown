@@ -1,0 +1,220 @@
+---
+layout: post
+date:   2019-03-06 19:45:01
+categories: 深度学习
+tags: 深度学习 
+excerpt: 介绍一下关于SMTP协议的原理
+mathjax: true
+---
+* content
+{:toc}
+
+# 使用卷积神经网络进行图片分类
+
+本篇博客主要是为了详细的介绍从原始的数据形式，经过卷积神经网络后，如何得到最后的训练模型以及如何测试。详细的介绍每个部分需要用到的每个元素等；
+
+## x01数据情况
+
+原始数据情况如下，数据存放的形式如下：
+
+```js
+Data
+|__train
+        |__ class1
+              |__sample1
+              |__sample2
+              |__sampleK
+      |__ classN
+|__validation
+          |__ class1
+              |__sample1
+              |__sample2
+              |__sampleM
+      |__ classN
+```
+
+每个sample都是256\*256\*4的图片；读取图片并转化为256\*256\*3的代码如下：
+
+```pyt
+from PIL import Image
+image = Image.open(path_image) #path_image是图片的地址
+arr = np.array(image)/255.0 #这句的作用就是将每个像素点都进行转化到0～1的值,这里arr是256*256*4的矩阵
+data = arr[:,:,:3] #这里得到256*256*3的矩阵
+```
+
+从这些数据里面得到的4个数据，`all_imgs,labels,num,classes`
+
+```jso
+all_imgs:类型为数组，存储的是每张图像的256*256*3的矩阵，num*256*256*3,all_imgs[i]表示第i个图像的数据矩阵表示；len(all_imgs)的大小为num;
+labels:类型为数组，存储的是每张图像的标签，每张图片的标签以阿拉伯数字0～N-1（N为图片的总类型数）表示,labels[i]表示第i张图像的标签，与all_imgs一一对应；len(labels)的大小为num;
+num:类型为整数，表示图片的总的张数；
+classes:类型为字典，存储的是每个类型对应的标签；len(classes)为类别数N；classes['class_i'] = i - 1
+```
+
+数据处理：
+
+对于labels和all_imgs都需要用`random.shuffle`进行打乱处理，在每一次的epoch里都需要打乱，不然多做几次的话没什么意义；另外对于每一个标签labels需要用`to_categorical`做one-hot向量化;
+
+## x02 卷积网络模型
+
+基本流程如下：
+
+```js
+1: Input_1: InputLayer #（256*256*3）
+2: conv2d_1: Conv2D # 128*128*10
+3: max_pooling2d_1: MaxPooling2D # 64*64*10 
+4: conv2d_2: Conv2D # 32*32*20
+5: max_pooling2d_2: MaxPooling2D # 16*16*20
+6: flatten_1: Flatten # 8*8*40
+7: dense_1: Dense # 4*4*40
+8: dropout_1: Dropout # 1*640
+9: Output_1(dense_2): Dense # 1*120
+```
+
+函数解释如下：
+
+```js
+Convolution2D函数：进行卷积运算
+Conv_1 = Convolution2D(10,(3,3),strides=2,padding='same',activation='tanh')(input)
+即有10个3*3的卷积核，步长为2，padding方式为same，激活方式为tanh；
+输入input大小为：256*256*3
+输出大小为：128*128*10；padding为same,所以输出的长度为输入的大小除以步长向上取整，然后通道数为滤波器的个数
+
+keras.layers.convolutional.Conv2D(filters, kernel_size, strides=(1,1), padding='valid', data_format=None, dilation_rate=(1,1),activation=None, use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None,bias_constraint=None, input_shape = (rows,cols,channels) )
+filters：卷积核的数目（即输出的维度）
+kernel_size：单个整数或由两个整数构成的list/tuple，卷积核的宽度和长度。如为单个整数，则表示在各个空间维度的相同长度。
+strides：单个整数或由两个整数构成的list/tuple，为卷积的步长。如为单个整数，则表示在各个空间维度的相同步长。任何不为1的strides均与任何不为1的dilation_rata均不兼容
+padding：补0策略，为“valid”, “same” 。“valid”代表只进行有效的卷积，即对边界数据不处理。“same”代表保留边界处的卷积结果，通常会导致输出shape与输入shape相同。
+activation：激活函数，为预定义的激活函数名（参考激活函数），或逐元素（element-wise）的Theano函数。如果不指定该参数，将不会使用任何激活函数（即使用线性激活函数：a(x)=x）
+dilation_rate：单个整数或由两个个整数构成的list/tuple，指定dilated convolution中的膨胀比例。任何不为1的dilation_rata均与任何不为1的strides均不兼容。
+data_format：字符串，“channels_first”或“channels_last”之一，代表图像的通道维的位置。该参数是Keras 1.x中的image_dim_ordering，“channels_last”对应原本的“tf”，“channels_first”对应原本的“th”。以128x128的RGB图像为例，“channels_first”应将数据组织为（3,128,128），而“channels_last”应将数据组织为（128,128,3）。该参数的默认值是~/.keras/keras.json中设置的值，若从未设置过，则为“channels_last”。
+use_bias:布尔值，是否使用偏置项
+kernel_initializer：权值初始化方法，为预定义初始化方法名的字符串，或用于初始化权重的初始化器。参考initializers
+bias_initializer：权值初始化方法，为预定义初始化方法名的字符串，或用于初始化权重的初始化器。参考initializers
+kernel_regularizer：施加在权重上的正则项，为Regularizer对象
+bias_regularizer：施加在偏置向量上的正则项，为Regularizer对象
+activity_regularizer：施加在输出上的正则项，为Regularizer对象
+kernel_constraints：施加在权重上的约束项，为Constraints对象
+bias_constraints：施加在偏置上的约束项，为Constraints对象
+```
+
+```js
+MaxPooling2D函数：进行最大池化
+Max_pool_1 = MaxPooling2D((2,2),strides=2)(Conv_1)
+即以2*2的核进行步长为2的最大池化
+输入为：256*256*3
+输出为：64*64*10 ；输出的大小为输入的大小除以步长向上取整；
+
+keras.layers.pooling.MaxPooling2D( pool_size=(2, 2), strides=None, padding='valid', data_format=None )
+pool_size：整数或长为2的整数tuple，代表在两个方向（竖直，水平）上的下采样因子，如取（2，2）将使图片在两个维度上均变为原长的一半。为整数意为各个维度值相同且为该数字。
+strides：整数或长为2的整数tuple，或者None，步长值。
+padding：‘valid’或者‘same’
+data_format：字符串，“channels_first”或“channels_last”之一，代表图像的通道维的位置。该参数是Keras 1.x中的image_dim_ordering，“channels_last”对应原本的“tf”，“channels_first”对应原本的“th”。以128x128的RGB图像为例，“channels_first”应将数据组织为（3,128,128），而“channels_last”应将数据组织为（128,128,3）。该参数的默认值是~/.keras/keras.json中设置的值，若从未设置过，则为“channels_last”。
+```
+
+```js
+Flatten函数：进行扁平化处理，将多维向量压到一维；
+Flat = Flatten()(Max_pool_3)
+输入为：4*4*40
+输出为：1*640
+```
+
+```js
+Dense函数：全连接层  相当于添加一个层
+Dense_1 = Dense(120,activation='tanh')(Flat) # 1*120
+
+keras.layers.core.Dense ( units, activation=None, use_bias=True, kernel_initializer='glorot_uniform', bias_initializer='zeros', kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, kernel_constraint=None, bias_constraint=None  )
+units：大于0的整数，代表该层的输出维度。
+activation：激活函数，为预定义的激活函数名（参考激活函数），或逐元素（element-wise）的Theano函数。如果不指定该参数，将不会使用任何激活函数（即使用线性激活函数：a(x)=x）
+use_bias: 布尔值，是否使用偏置项
+kernel_initializer：权值初始化方法，为预定义初始化方法名的字符串，或用于初始化权重的初始化器。参考initializers
+bias_initializer：权值初始化方法，为预定义初始化方法名的字符串，或用于初始化权重的初始化器。参考initializers
+kernel_regularizer：施加在权重上的正则项，为Regularizer对象
+bias_regularizer：施加在偏置向量上的正则项，为Regularizer对象
+activity_regularizer：施加在输出上的正则项，为Regularizer对象
+kernel_constraints：施加在权重上的约束项，为Constraints对象
+bias_constraints：施加在偏置上的约束项，为Constraints对象
+input_dim:可以指定输入数据的维度
+```
+
+```js
+Dropout函数：防止过拟合
+dropout = Dropout(0.5)(Dense_1) 
+（也即以0.5的概率输出）
+
+为什么说Dropout可以解决过拟合？
+（1）取平均的作用： 先回到标准的模型即没有dropout，我们用相同的训练数据去训练5个不同的神经网络，一般会得到5个不同的结果，此时我们可以采用 “5个结果取均值”或者“多数取胜的投票策略”去决定最终结果。例如3个网络判断结果为数字9,那么很有可能真正的结果就是数字9，其它两个网络给出了错误结果。这种“综合起来取平均”的策略通常可以有效防止过拟合问题。因为不同的网络可能产生不同的过拟合，取平均则有可能让一些“相反的”拟合互相抵消。dropout掉不同的隐藏神经元就类似在训练不同的网络，随机删掉一半隐藏神经元导致网络结构已经不同，整个dropout过程就相当于对很多个不同的神经网络取平均。而不同的网络产生不同的过拟合，一些互为“反向”的拟合相互抵消就可以达到整体上减少过拟合。
+
+（2）减少神经元之间复杂的共适应关系： 因为dropout程序导致两个神经元不一定每次都在一个dropout网络中出现。这样权值的更新不再依赖于有固定关系的隐含节点的共同作用，阻止了某些特征仅仅在其它特定特征下才有效果的情况 。迫使网络去学习更加鲁棒的特征 ，这些特征在其它的神经元的随机子集中也存在。换句话说假如我们的神经网络是在做出某种预测，它不应该对一些特定的线索片段太过敏感，即使丢失特定的线索，它也应该可以从众多其它线索中学习一些共同的特征。从这个角度看dropout就有点像L1，L2正则，减少权重使得网络对丢失特定神经元连接的鲁棒性提高。
+
+（3）Dropout类似于性别在生物进化中的角色：物种为了生存往往会倾向于适应这种环境，环境突变则会导致物种难以做出及时反应，性别的出现可以繁衍出适应新环境的变种，有效的阻止过拟合，即避免环境改变时物种可能面临的灭绝。
+```
+
+
+
+## x03 模型训练
+
+超参数设置如下：
+
+```js
+batch_size: 32（也即每次投到模型32张图像数据）
+epochs：10（也即一共进行10次的总的样本的训练）
+```
+
+向后传播使用Adam
+
+```js
+adam = Adam(lr=0.001, beta_1=0.9,beta_2=0.999,epsilon=1e-08)
+Adam：随机优化算法，一个寻找全局最优点的优化算法，引入了二次方梯度校正。
+lr：learning rate,学习率
+```
+
+```js
+model = Model(inputs = input, outputs = output)
+model.compile(optimizer=adam,loss='categorical_crossentropy',metrics=['accuracy'])
+model.fit(data,label,batch_size=batch_size,epochs=epoch)
+使用adam优化函数，交叉熵来计算损失函数
+```
+
+```js
+fit函数：
+fit(self, x, y, batch_size=32, epochs=10, verbose=1, callbacks=None, validation_split=0.0,validation_data=None, shuffle=True, class_weight=None, sample_weight=None, initial_epoch=0 )
+x：输入数据。如果模型只有一个输入，那么x的类型是numpy array，如果模型有多个输入，那么x的类型应当为list，list的元素是对应于各个输入的numpy array
+y：标签，numpy array
+batch_size：整数，指定进行梯度下降时每个batch包含的样本数。训练时一个batch的样本会被计算一次梯度下降，使目标函数优化一步。
+epochs：整数，训练的轮数，每个epoch会把训练集轮一遍。
+verbose：日志显示，0为不在标准输出流输出日志信息，1为输出进度条记录，2为每个epoch输出一行记录
+callbacks：list，其中的元素是keras.callbacks.Callback的对象。这个list中的回调函数将会在训练过程中的适当时机被调用，参考回调函数
+validation_split：0~1之间的浮点数，用来指定训练集的一定比例数据作为验证集。验证集将不参与训练，并在每个epoch结束后测试的模型的指标，如损失函数、精确度等。注意，validation_split的划分在shuffle之前，因此如果你的数据本身是有序的，需要先手工打乱再指定validation_split，否则可能会出现验证集样本不均匀。
+validation_data：形式为（X，y）的tuple，是指定的验证集。此参数将覆盖validation_spilt。
+shuffle：布尔值或字符串，一般为布尔值，表示是否在训练过程中随机打乱输入样本的顺序。若为字符串“batch”，则是用来处理HDF5数据的特殊情况，它将在batch内部将数据打乱。
+class_weight：字典，将不同的类别映射为不同的权值，该参数用来在训练过程中调整损失函数（只能用于训练）
+sample_weight：权值的numpy array，用于在训练时调整损失函数（仅用于训练）。可以传递一个1D的与样本等长的向量用于对样本进行1对1的加权，或者在面对时序数据时，传递一个的形式为（samples，sequence_length）的矩阵来为每个时间步上的样本赋不同的权。这种情况下请确定在编译模型时添加了sample_weight_mode='temporal'。
+
+initial_epoch: 从该参数指定的epoch开始训练，在继续之前的训练时有用。
+```
+
+##  x04 训练结果
+
+训练的结果输出：
+
+```js
+predict = (np.asarray(model.predict(val_data))).round()
+accuracy = accuracy_score(val_label,predict)
+f1 = f1_score(val_label,predict,average = 'weighted')
+precision = precision_score(val_label,predict,average = 'weighted')
+recall = recall_score(val_label,predict,average = 'weighted')
+```
+
+这时候的准确率是在验证集上的准确率；
+
+## x05 模型保存
+
+```js
+model.save(model_name+'.h5') # 这是模型
+js = json.dumps(classes) # 这个只是将类别与对应的标签写进文件里
+file = open(model_name + 'classes.txt','w')
+file.write(js)
+file.close()
+将模型保存在.h5的文件里，预测的时候直接拿出来预测就行；
+```
