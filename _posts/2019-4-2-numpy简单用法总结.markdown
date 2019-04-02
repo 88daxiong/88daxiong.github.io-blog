@@ -1,0 +1,196 @@
+---
+layout: post
+date:   2019-04-02 19:31:30
+categories: numpy
+tags: numpy
+excerpt: numpy的简单用法总结
+mathjax: true
+---
+* content
+{:toc}
+
+## numpy和list的加减法对比
+
+`list`的`+`是连接数组的意思，`list`没有`-`操作，也没有`*`操作；
+
+`numpy`的`ndarray`有`+，-，*`等操作；
+
+如下对比：
+
+```python
+In [1]: import numpy as np
+
+In [2]: x = np.arange(10)
+
+In [3]: y = np.arange(10)
+
+In [4]: x
+Out[4]: array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+In [5]: y
+Out[5]: array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+In [6]: x + y
+Out[6]: array([ 0,  2,  4,  6,  8, 10, 12, 14, 16, 18])
+
+In [7]: x - y
+Out[7]: array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+
+In [8]: 0.5*x
+Out[8]: array([0. , 0.5, 1. , 1.5, 2. , 2.5, 3. , 3.5, 4. , 4.5])
+
+In [9]: a = list(x)
+
+In [10]: b = list(y)
+
+In [11]: a
+Out[11]: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+In [12]: b
+Out[12]: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+In [13]: a + b
+Out[13]: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+In [14]: a - b
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-14-09bd029d0285> in <module>
+----> 1 a - b
+
+TypeError: unsupported operand type(s) for -: 'list' and 'list'
+
+In [15]: 0.5 * b
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-15-a3d555cea3aa> in <module>
+----> 1 0.5 * b
+
+TypeError: can't multiply sequence by non-int of type 'float'
+
+In [16]: type(x)
+Out[16]: numpy.ndarray
+
+In [17]: type(a)
+Out[17]: list
+
+  
+```
+
+然后数组如果要实现`numpy`的功能，可能需要自定义函数；`numpy`里面数组的连接，则有其他的办法可以实现；例如：`numpy.append(x, y)`
+
+`reshape`里面的-1表示未定的长度，根据总的长度和另外的长度除以得到；
+
+```python
+In [1]: import numpy as np
+
+In [2]: x = np.arange(10)
+
+In [3]: y = x
+
+In [4]: x
+Out[4]: array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+In [5]: y
+Out[5]: array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+In [6]: z = np.append(x, y)
+
+In [7]: z
+Out[7]: array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+In [8]: z = z.reshape(-1, len(x))
+
+In [9]: z
+Out[9]:
+array([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]])
+```
+
+## random随机生成数据
+
+```python
+#1.随机的浮点数，范围是在0.0~1.0之间：random.random()
+In [28]: import random
+
+In [29]: random.random()
+Out[29]: 0.20929427767220354
+
+#2.函数随机生成一个[a,b]范围内的浮点数：random.uniform(a, b)
+In [30]: random.uniform(0, 100)
+Out[30]: 54.168796871790036
+
+#3.随机生成一个范围[a, b]内的整数：random.randint(a, b)
+In [31]: random.randint(1,10)
+Out[31]: 5
+
+#4.随机选取一个元素返回：random.choice()
+可以用于字符串、列表、元组等
+In [32]: random.choice([1,2,3]) #列表
+Out[32]: 1
+
+In [33]: random.choice((1,2,3)) #元组
+Out[33]: 1
+
+In [34]: random.choice("hello world") #字符串
+Out[34]: 'r'
+
+#随机生成字符
+In [35]: random.choice('abcdefghijklmnopqrstuvwxyz!@#$%^&*()')
+Out[35]: 'w'
+
+#5.随机打乱元素：random.shuffle()
+In [36]: arr = list(np.arange(10))
+
+In [37]: arr
+Out[37]: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+In [38]: random.shuffle(arr)
+
+In [39]: arr
+Out[39]: [2, 4, 3, 9, 7, 6, 0, 8, 5, 1]
+
+#6.从序列a中截取指定长度n的片段:random.sample(a, n)
+In [40]: arr
+Out[40]: [2, 4, 3, 9, 7, 6, 0, 8, 5, 1]
+
+In [41]: string = "hello world"
+
+In [42]: random.sample(arr, 2)
+Out[42]: [1, 4]
+
+In [43]: random.sample(string, 2)
+Out[43]: ['l', 'd']
+
+#7.随机选取a到b间的奇数1/偶数2：random.randrange(a, b, 2)
+In [44]: random.randrange(0, 11, 1)  #奇数
+Out[44]: 1
+
+In [45]: random.randrange(0, 11, 2)  #偶数
+Out[45]: 10
+```
+
+## python中找到最大或最小K个数的索引
+
+```python
+# -*- coding: utf-8 -*-
+In [20]: import heapq
+
+In [21]: nums = list(np.arange(10))
+
+In [22]: maxList = map(nums.index, heapq.nlargest(3, nums)) # 得到最大的三个数的索引
+
+In [23]: minList = map(nums.index, heapq.nsmallest(3, nums)) # 得到最小的三个数的索引
+
+In [24]: nums
+Out[24]: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+In [25]: maxList
+Out[25]: <map at 0x11a835be0>
+
+In [26]: list(maxList)
+Out[26]: [9, 8, 7]
+
+In [27]: list(minList)
+Out[27]: [0, 1, 2]
+```
