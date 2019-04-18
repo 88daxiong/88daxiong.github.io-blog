@@ -32,7 +32,7 @@ LaTex论文在线编辑和操作网站：
 
 [MobaXterm](https://mobaxterm.mobatek.net/), Windows上的Xshell、Xftp、Xmanger的综合版
 
-
+[ROC](https://www.onlineocr.net/), 识别图片转化为文字
 
 
 
