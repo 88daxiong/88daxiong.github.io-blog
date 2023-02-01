@@ -14,14 +14,8 @@ url: "https://88daxiong.github.io/" # the base hostname & protocol for your site
 permalink: /:year/:month/:day/:title/
 
 # other links
-twitter_username:
-facebook_username: 
 github_username:  88daxiong
-email: 
-weibo_username: 
 zhihu_username: ding_xiong
-linkedIn_username: 
-dribbble_username:
 
 description_footer: Life is like a box of chocolates
 
