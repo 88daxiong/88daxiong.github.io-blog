@@ -1,0 +1,12 @@
+---
+layout: post
+title:  "2023年第一篇博客"
+date:   2023-02-01 11:02:41
+categories: 成长 感悟
+tags: 感悟 
+excerpt: keep growing
+mathjax: true
+---
+* content
+{:toc}
+总感觉有太多的迷茫，在生活或者工作，接收到了太多不属于自己的信息，就会让自己感觉到很渺小无力。
