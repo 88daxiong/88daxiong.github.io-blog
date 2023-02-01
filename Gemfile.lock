@@ -1,0 +1,13 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    webrick (1.8.1)
+
+PLATFORMS
+  x86_64-darwin-21
+
+DEPENDENCIES
+  webrick (~> 1.8)
+
+BUNDLED WITH
+   2.4.6
