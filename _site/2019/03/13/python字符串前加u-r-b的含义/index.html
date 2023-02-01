@@ -6,15 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Knowledge Flow</title>
-    <meta name="description" content="第一篇文章吧">
+    <title>python字符串前加u、b、r的含义</title>
+    <meta name="description" content="简单说明一下python字符串的编码含义">
 
     <link rel="shortcut icon" href="/favicon.ico?" type="image/x-icon">
     <link rel="icon" href="/favicon.ico?" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://at.alicdn.com/t/font_8v3czwksspqlg14i.css">
     <link rel="stylesheet" href="/css/main.css ">
-    <link rel="canonical" href="http://localhost:4000/2019/02/26/Knowledge-Flow/">
+    <link rel="canonical" href="http://localhost:4000/2019/03/13/python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E5%8A%A0u-r-b%E7%9A%84%E5%90%AB%E4%B9%89/">
     <link rel="alternate" type="application/rss+xml" title="daxiong" href="http://localhost:4000/feed.xml ">
 
 
@@ -118,11 +118,11 @@
 
         <div class="page clearfix" post>
     <div class="left">
-        <h1>Knowledge Flow</h1>
+        <h1>python字符串前加u、b、r的含义</h1>
         <div class="label">
 
             <div class="label-card">
-                <i class="fa fa-calendar"></i>2019-02-26
+                <i class="fa fa-calendar"></i>2019-03-13
             </div>
 
             <div class="label-card">
@@ -142,7 +142,7 @@
   <i class="fa fa-th-list"></i>
   
     
-        <a href="/category/#深度学习" title="Category: 深度学习" rel="category">深度学习</a>
+        <a href="/category/#python" title="Category: python" rel="category">python</a>
     
   
 
@@ -159,11 +159,8 @@
   <i class="fa fa-tags"></i>
   
     
-        <!--a href="/tag/#%E6%84%9F%E6%82%9F" title="Tag: 感悟" rel="tag">感悟</a-->
-        <a href="/tag/#感悟" title="Tag: 感悟" rel="tag">感悟</a>&nbsp;
-    
-        <!--a href="/tag/#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0" title="Tag: 深度学习" rel="tag">深度学习</a-->
-        <a href="/tag/#深度学习" title="Tag: 深度学习" rel="tag">深度学习</a>
+        <!--a href="/tag/#python" title="Tag: python" rel="tag">python</a-->
+        <a href="/tag/#python" title="Tag: python" rel="tag">python</a>
     
   
 
@@ -175,22 +172,59 @@
         <hr>
         <article itemscope itemtype="http://schema.org/BlogPosting">
         <ul id="markdown-toc">
-  <li><a href="#knowledge-flow" id="markdown-toc-knowledge-flow">Knowledge Flow</a></li>
+  <li><a href="#python字符串前加ubr的含义" id="markdown-toc-python字符串前加ubr的含义">python字符串前加u、b、r的含义</a>    <ul>
+      <li><a href="#0x1-字符前加u" id="markdown-toc-0x1-字符前加u">0x1 字符前加u</a></li>
+      <li><a href="#0x2-字符前加r" id="markdown-toc-0x2-字符前加r">0x2 字符前加r</a></li>
+      <li><a href="#0x3-字符前加b" id="markdown-toc-0x3-字符前加b">0x3 字符前加b</a></li>
+      <li><a href="#0x4-字符串和bytes类型转换" id="markdown-toc-0x4-字符串和bytes类型转换">0x4 字符串和bytes类型转换</a></li>
+    </ul>
+  </li>
 </ul>
 
-<h1 id="knowledge-flow">Knowledge Flow</h1>
+<h1 id="python字符串前加ubr的含义">python字符串前加u、b、r的含义</h1>
+<p>参见：<a href="https://www.cnblogs.com/liangmingshen/p/9274021.html">Python 字符串前面加u,r,b的含义</a></p>
+<h2 id="0x1-字符前加u">0x1 字符前加u</h2>
+<p>例：u”我是含有中文字符组成的字符串。”
+作用：
+后面字符串以 Unicode 格式 进行编码，一般用在中文字符串前面，防止因为源码储存格式问题，导致再次使用时出现乱码。</p>
 
-<p>Wisdom flowing form old to young and yound to old</p>
+<h2 id="0x2-字符前加r">0x2 字符前加r</h2>
+<p>例：r”\n\n\n\n”　　# 表示一个普通生字符串 \n\n\n\n，而不表示换行了。
+作用：
+去掉反斜杠的转移机制。
+（特殊字符：即那些，反斜杠加上对应字母，表示对应的特殊含义的，比如最常见的”\n”表示换行，”\t”表示Tab等。 ）
+应用：
+常用于正则表达式，对应着re模块。</p>
 
-<p>首先要简单区别几个概念：人工智能，机器学习，深度学习，神经网络。这几个词应该是出现的最为频繁的，但是他们有什么区别呢？</p>
+<h2 id="0x3-字符前加b">0x3 字符前加b</h2>
+<p>例: response = b’Hello World!’     # b’ ‘ 表示这是一个 bytes 对象
+作用：
+b” “前缀表示：后面字符串是bytes 类型。
+用处：
+网络编程中，服务器和浏览器只认bytes 类型数据。</p>
 
-<p><strong>人工智能</strong>：人类通过直觉可以解决的问题，如：自然语言理解，图像识别，语音识别等，计算机很难解决，而人工智能就是要解决这类问题。</p>
+<h2 id="0x4-字符串和bytes类型转换">0x4 字符串和bytes类型转换</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In [1]: b = b'example'
 
-<p><strong>机器学习</strong>：如果一个任务可以在任务T上，随着经验E的增加，效果P也随之增加，那么就认为这个程序可以从经验中学习。</p>
+In [2]: type(b)
+Out[2]: bytes
 
-<p><strong>深度学习</strong>：其核心就是自动将简单的特征组合成更加复杂的特征，并用这些特征解决问题。</p>
+In [3]: s = bytes.decode(b)
 
-<p><strong>神经网络</strong>：最初是一个生物学的概念，一般是指大脑神经元，触点，细胞等组成的网络，用于产生意识，帮助生物思考和行动，后来人工智能受神经网络的启发，发展出了人工神经网络。</p>
+In [4]: s
+Out[4]: 'example'
+
+In [5]: type(s)
+Out[5]: str
+
+In [6]: t = str.encode(s)
+
+In [7]: t
+Out[7]: b'example'
+
+In [8]: type(t)
+Out[8]: bytes
+</code></pre></div></div>
 
         </article>
         <hr>
@@ -201,18 +235,11 @@
             
                 
                     
-                        
-                        <h2 id="similar_posts">Similar Posts</h2>
-                        <ul>
-                        
-                        <li class="relatedPost">
-                            <a href="/2023/01/31/%E6%96%B0%E5%B9%B4%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">2023年第一篇博客
-                            
-                            </a>
-                        </li>
-                        
-                        
-                    
+                
+            
+        
+            
+            
                 
                     
                 
@@ -223,8 +250,6 @@
                 
                     
                 
-                    
-                
             
         
             
@@ -232,14 +257,7 @@
                 
                     
                 
-                    
-                
             
-        
-            
-            
-                
-                    
                 
                     
                 
@@ -250,11 +268,10 @@
                 
                     
                 
-                    
-                
             
-                
-                    
+        
+            
+            
                 
                     
                 
@@ -265,17 +282,6 @@
                 
                     
                 
-                    
-                        
-                        <li class="relatedPost">
-                            <a href="/2019/03/07/%E4%BD%BF%E7%94%A8%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%BF%9B%E8%A1%8C%E5%9B%BE%E7%89%87%E5%88%86%E7%B1%BB/">使用卷积神经网络进行图片分类
-                            
-                            </a>
-                        </li>
-                        
-                        
-                    
-                
             
         
             
@@ -283,23 +289,7 @@
                 
                     
                 
-                    
-                        
-                        <li class="relatedPost">
-                            <a href="/2019/03/02/%E5%8D%81%E7%A7%8D%E7%BB%9F%E8%AE%A1%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">十种统计方法总结
-                            
-                            </a>
-                        </li>
-                        
-                        
-                    
-                
             
-        
-            
-            
-                
-                    
                 
                     
                 
@@ -310,39 +300,24 @@
                 
                     
                 
-                    
-                        
-                        <li class="relatedPost">
-                            <a href="/2018/08/11/Variable&placeholder/">Variable和placeholder的区别
-                            
-                            </a>
-                        </li>
-                        
-                        
-                    
-                
             
-                
-                    
                 
                     
                 
             
         
-        
-            </ul>
         
 
         <div class="post-recent">
     <div class="pre">
         
-        <p><strong>上一篇</strong> <a href="/2018/08/11/Variable&placeholder/">Variable和placeholder的区别</a></p>
+        <p><strong>上一篇</strong> <a href="/2019/03/12/pcap%E9%82%AE%E4%BB%B6%E8%A7%A3%E6%9E%90/">pcap邮件解析</a></p>
         
     </div>
     <div class="nex">
 
         
-        <p><strong>下一篇</strong> <a href="/2019/02/27/SMTP%E5%8D%8F%E8%AE%AE/">SMTP协议</a></p>
+        <p><strong>下一篇</strong> <a href="/2019/04/03/numpy%E7%AE%80%E5%8D%95%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93/">Numpy简单用法总结</a></p>
         
     </div>
 </div>
@@ -366,8 +341,6 @@
                     Content
                 </div>
                 <ul id="content-side" class="content-ul">
-                    
-                    <li><a href="#similar_posts">Similar Posts</a></li>
                     
                     <li><a href="#comments">Comments</a></li>
                 </ul>

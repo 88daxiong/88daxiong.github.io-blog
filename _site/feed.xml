@@ -5,9 +5,125 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 26 Feb 2019 21:08:47 +0800</pubDate>
-    <lastBuildDate>Tue, 26 Feb 2019 21:08:47 +0800</lastBuildDate>
-    <generator>Jekyll v3.8.5</generator>
+    <pubDate>Wed, 01 Feb 2023 14:01:15 +0800</pubDate>
+    <lastBuildDate>Wed, 01 Feb 2023 14:01:15 +0800</lastBuildDate>
+    <generator>Jekyll v4.3.2</generator>
+    
+      <item>
+        <title>2023年第一篇博客</title>
+        <description>keep growing</description>
+        <pubDate>Tue, 31 Jan 2023 19:02:41 +0800</pubDate>
+        <link>http://localhost:4000/2023/01/31/%E6%96%B0%E5%B9%B4%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</link>
+        <guid isPermaLink="true">http://localhost:4000/2023/01/31/%E6%96%B0%E5%B9%B4%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</guid>
+        
+        <category>感悟</category>
+        
+        
+        <category>成长</category>
+        
+        <category>感悟</category>
+        
+      </item>
+    
+      <item>
+        <title>字典找出最大值对应键值的方法</title>
+        <description>字典找出最大值对应键值的方法</description>
+        <pubDate>Mon, 05 Aug 2019 23:45:22 +0800</pubDate>
+        <link>http://localhost:4000/2019/08/05/%E5%AD%97%E5%85%B8%E6%89%BE%E5%87%BA%E6%9C%80%E5%A4%A7%E5%80%BC%E5%AF%B9%E5%BA%94%E9%94%AE%E5%80%BC%E7%9A%84%E6%96%B9%E6%B3%95/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/08/05/%E5%AD%97%E5%85%B8%E6%89%BE%E5%87%BA%E6%9C%80%E5%A4%A7%E5%80%BC%E5%AF%B9%E5%BA%94%E9%94%AE%E5%80%BC%E7%9A%84%E6%96%B9%E6%B3%95/</guid>
+        
+        <category>dict</category>
+        
+        
+        <category>python</category>
+        
+      </item>
+    
+      <item>
+        <title>Numpy简单用法总结</title>
+        <description>numpy的简单用法总结</description>
+        <pubDate>Wed, 03 Apr 2019 03:31:30 +0800</pubDate>
+        <link>http://localhost:4000/2019/04/03/numpy%E7%AE%80%E5%8D%95%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/04/03/numpy%E7%AE%80%E5%8D%95%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93/</guid>
+        
+        <category>numpy</category>
+        
+        
+        <category>numpy</category>
+        
+      </item>
+    
+      <item>
+        <title>python字符串前加u、b、r的含义</title>
+        <description>简单说明一下python字符串的编码含义</description>
+        <pubDate>Wed, 13 Mar 2019 07:18:54 +0800</pubDate>
+        <link>http://localhost:4000/2019/03/13/python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E5%8A%A0u-r-b%E7%9A%84%E5%90%AB%E4%B9%89/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/03/13/python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%89%8D%E5%8A%A0u-r-b%E7%9A%84%E5%90%AB%E4%B9%89/</guid>
+        
+        <category>python</category>
+        
+        
+        <category>python</category>
+        
+      </item>
+    
+      <item>
+        <title>pcap邮件解析</title>
+        <description>如何将pcap包截取的邮件信息解析为完整邮件</description>
+        <pubDate>Tue, 12 Mar 2019 04:38:13 +0800</pubDate>
+        <link>http://localhost:4000/2019/03/12/pcap%E9%82%AE%E4%BB%B6%E8%A7%A3%E6%9E%90/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/03/12/pcap%E9%82%AE%E4%BB%B6%E8%A7%A3%E6%9E%90/</guid>
+        
+        <category>pcap</category>
+        
+        <category>邮件</category>
+        
+        
+        <category>邮件</category>
+        
+      </item>
+    
+      <item>
+        <title>使用卷积神经网络进行图片分类</title>
+        <description>介绍一下关于SMTP协议的原理</description>
+        <pubDate>Thu, 07 Mar 2019 03:45:01 +0800</pubDate>
+        <link>http://localhost:4000/2019/03/07/%E4%BD%BF%E7%94%A8%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%BF%9B%E8%A1%8C%E5%9B%BE%E7%89%87%E5%88%86%E7%B1%BB/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/03/07/%E4%BD%BF%E7%94%A8%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%BF%9B%E8%A1%8C%E5%9B%BE%E7%89%87%E5%88%86%E7%B1%BB/</guid>
+        
+        <category>深度学习</category>
+        
+        
+        <category>深度学习</category>
+        
+      </item>
+    
+      <item>
+        <title>十种统计方法总结</title>
+        <description>总结一下常用的机器学习算法以及其各自特点</description>
+        <pubDate>Sat, 02 Mar 2019 23:52:35 +0800</pubDate>
+        <link>http://localhost:4000/2019/03/02/%E5%8D%81%E7%A7%8D%E7%BB%9F%E8%AE%A1%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/03/02/%E5%8D%81%E7%A7%8D%E7%BB%9F%E8%AE%A1%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/</guid>
+        
+        <category>深度学习</category>
+        
+        
+        <category>深度学习</category>
+        
+      </item>
+    
+      <item>
+        <title>SMTP协议</title>
+        <description>介绍一下关于SMTP协议的原理</description>
+        <pubDate>Wed, 27 Feb 2019 03:45:01 +0800</pubDate>
+        <link>http://localhost:4000/2019/02/27/SMTP%E5%8D%8F%E8%AE%AE/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/02/27/SMTP%E5%8D%8F%E8%AE%AE/</guid>
+        
+        <category>SMTP</category>
+        
+        
+        <category>邮件</category>
+        
+      </item>
     
       <item>
         <title>Knowledge Flow</title>
@@ -19,6 +135,22 @@
         <category>感悟</category>
         
         <category>深度学习</category>
+        
+        
+        <category>深度学习</category>
+        
+      </item>
+    
+      <item>
+        <title>Variable和placeholder的区别</title>
+        <description>Variable是一个变量，是可以持久和更新的数据，主要用于存储训练变量比如权重矩阵W和偏置b一般定义为Variable.</description>
+        <pubDate>Sat, 11 Aug 2018 02:26:23 +0800</pubDate>
+        <link>http://localhost:4000/2018/08/11/Variable&placeholder/</link>
+        <guid isPermaLink="true">http://localhost:4000/2018/08/11/Variable&placeholder/</guid>
+        
+        <category>深度学习</category>
+        
+        <category>Tensorflow</category>
         
         
         <category>深度学习</category>
