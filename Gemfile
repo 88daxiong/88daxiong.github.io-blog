@@ -3,8 +3,7 @@
 source "https://rubygems.org"
 
 # gem "rails"
-# gems: [jekyll-paginate]
-
-gem "jekyll"
 
 gem "webrick", "~> 1.8"
+
+gem "jekyll", "~> 4.3"
