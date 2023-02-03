@@ -1,0 +1,112 @@
+<ul id="markdown-toc">
+  <li><a href="#十种统计方法总结" id="markdown-toc-十种统计方法总结">十种统计方法总结</a></li>
+</ul>
+<h1 id="十种统计方法总结">十种统计方法总结</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">方法</th>
+      <th style="text-align: center">适用问题</th>
+      <th style="text-align: center">模型特点</th>
+      <th style="text-align: center">模型类型</th>
+      <th style="text-align: center">学习策略</th>
+      <th style="text-align: center">学习的损失函数</th>
+      <th style="text-align: center">学习算法</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">感知机</td>
+      <td style="text-align: center">二分类</td>
+      <td style="text-align: center">分离超平面</td>
+      <td style="text-align: center">判别模型</td>
+      <td style="text-align: center">极小化误分点到超平面距离</td>
+      <td style="text-align: center">误分点到超平面距离</td>
+      <td style="text-align: center">随机梯度下降</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">k近邻</td>
+      <td style="text-align: center">多分类、回归</td>
+      <td style="text-align: center">特征空间、样本点</td>
+      <td style="text-align: center">判别模型</td>
+      <td style="text-align: center">K-NN不具有显式的学习过程</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">朴素贝叶斯法</td>
+      <td style="text-align: center">多分类</td>
+      <td style="text-align: center">特征与类别的联合概率分布、条件独立假设</td>
+      <td style="text-align: center">生成模型</td>
+      <td style="text-align: center">极大似然估计、极大后验估计</td>
+      <td style="text-align: center">对数似然损失</td>
+      <td style="text-align: center">概率计算公式、EM算法</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">决策树</td>
+      <td style="text-align: center">多分类、回归</td>
+      <td style="text-align: center">分类树、回归树</td>
+      <td style="text-align: center">判别模型</td>
+      <td style="text-align: center">正则化的极大似然估计</td>
+      <td style="text-align: center">对数似然损失</td>
+      <td style="text-align: center">特征选择、生成、剪枝</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">逻辑斯谛回归与最大熵模型</td>
+      <td style="text-align: center">多分类</td>
+      <td style="text-align: center">特征条件下类别的条件概率分布，对数线性模型</td>
+      <td style="text-align: center">判别模型</td>
+      <td style="text-align: center">极大似然估计、正则化的极大似然估计</td>
+      <td style="text-align: center">逻辑斯谛损失</td>
+      <td style="text-align: center">改进的迭代尺度算法、梯度下降、拟牛顿法</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">支持向量机</td>
+      <td style="text-align: center">二分类</td>
+      <td style="text-align: center">分离超平面、核技巧（到高维的映射技巧）</td>
+      <td style="text-align: center">判别模型</td>
+      <td style="text-align: center">极小化正则化合页损失函数、软间隔最大化</td>
+      <td style="text-align: center">合页损失</td>
+      <td style="text-align: center">序列最小最优化算法（SMO）</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">bosting</td>
+      <td style="text-align: center">二分类</td>
+      <td style="text-align: center">弱分类器的线性组合</td>
+      <td style="text-align: center">判别模型</td>
+      <td style="text-align: center">极小化加法模型的指数损失</td>
+      <td style="text-align: center">对数损失</td>
+      <td style="text-align: center">前向分步加法算法</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">EM算法</td>
+      <td style="text-align: center">概率模型参数估计</td>
+      <td style="text-align: center">含隐变量概率模型</td>
+      <td style="text-align: center">不是具体模型</td>
+      <td style="text-align: center">极大似然估计、极大后验概率估计</td>
+      <td style="text-align: center">对数似然损失</td>
+      <td style="text-align: center">迭代算法</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">隐马尔科夫模型</td>
+      <td style="text-align: center">标注</td>
+      <td style="text-align: center">观测序列与状态序列的联合概率分布模型</td>
+      <td style="text-align: center">生成模型</td>
+      <td style="text-align: center">极大似然估计、极大后验概率估计</td>
+      <td style="text-align: center">对数似然损失</td>
+      <td style="text-align: center">概率计算公式、EM算法</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">条件随机场</td>
+      <td style="text-align: center">标注</td>
+      <td style="text-align: center">状态序列条件下观测序列的条件概率分布、对数线性模型</td>
+      <td style="text-align: center">判别模型</td>
+      <td style="text-align: center">极大似然估计、正则化的极大似然估计</td>
+      <td style="text-align: center">对数似然损失</td>
+      <td style="text-align: center">改进的迭代尺度算法、梯度下降、拟牛顿法</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>摘自：<a href="https://blog.csdn.net/github_38486975/article/details/81638329">十种统计方法总结</a></p>

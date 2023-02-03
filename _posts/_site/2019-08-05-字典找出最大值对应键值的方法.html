@@ -1,0 +1,34 @@
+<ul id="markdown-toc">
+  <li><a href="#字典找出最大值对应键值的方法" id="markdown-toc-字典找出最大值对应键值的方法">字典找出最大值对应键值的方法</a>    <ul>
+      <li><a href="#0x1-lambda方法" id="markdown-toc-0x1-lambda方法">0x1 lambda方法</a></li>
+      <li><a href="#0x2-get方法" id="markdown-toc-0x2-get方法">0x2 get方法</a></li>
+      <li><a href="#0x3-operatoritemgetter方法" id="markdown-toc-0x3-operatoritemgetter方法">0x3 operator.itemgetter方法</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="字典找出最大值对应键值的方法">字典找出最大值对应键值的方法</h1>
+
+<p>这里有一个字典如下:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">dic</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="p">{</span><span class="s">'计算'</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s">'健康'</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s">'你好'</span><span class="p">:</span> <span class="mi">58</span><span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="0x1-lambda方法">0x1 lambda方法</h2>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="nb">max</span><span class="p">(</span><span class="n">dic</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">dic</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="s">'健康'</span>
+</code></pre></div></div>
+
+<h2 id="0x2-get方法">0x2 get方法</h2>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="nb">max</span><span class="p">(</span><span class="n">dic</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">dic</span><span class="p">.</span><span class="n">get</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="s">'健康'</span>
+</code></pre></div></div>
+
+<h2 id="0x3-operatoritemgetter方法">0x3 operator.itemgetter方法</h2>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">operator</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="nb">max</span><span class="p">(</span><span class="n">dic</span><span class="p">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">operator</span><span class="p">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="s">'健康'</span>
+</code></pre></div></div>
+
+<p><a href="https://www.jianshu.com/p/2ab24977de93">参考文献</a></p>

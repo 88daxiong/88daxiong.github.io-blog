@@ -1,0 +1,213 @@
+<ul id="markdown-toc">
+  <li><a href="#pcap包邮件解析" id="markdown-toc-pcap包邮件解析">pcap包邮件解析</a>    <ul>
+      <li><a href="#0x1-pcap包先解析为字符串形式的邮件文件" id="markdown-toc-0x1-pcap包先解析为字符串形式的邮件文件">0x1 pcap包先解析为字符串形式的邮件文件</a></li>
+      <li><a href="#0x2-将邮件主题使用mailparser函数库转化为json等格式的邮件" id="markdown-toc-0x2-将邮件主题使用mailparser函数库转化为json等格式的邮件">0x2 将邮件主题使用mailparser函数库转化为json等格式的邮件</a></li>
+      <li><a href="#0x3-感悟" id="markdown-toc-0x3-感悟">0x3 感悟</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="pcap包邮件解析">pcap包邮件解析</h1>
+<h2 id="0x1-pcap包先解析为字符串形式的邮件文件">0x1 pcap包先解析为字符串形式的邮件文件</h2>
+
+<p>这里的 pcap包主要专注于SMTP协议，关于SMTP协议，<a href="https://88daxiong.github.io/2019/02/26/SMTP%E5%8D%8F%E8%AE%AE/">可以看这篇文章</a>。关于pcap包的问题，需要注意的是，pcap包是从链路层-&gt;网络层-&gt;传输层-&gt;应用层，可参见<a href="https://www.cnblogs.com/songdechiu/p/5768734.html">TCP/IP协议数据包文件PCAP分析器</a>。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In [1]: from scapy.utils import *
+In [2]: from scapy.all import PcapReader
+In [3]: path = "/Users/dingxiong/Collentions/Paper/Graduation-project/我的坚果云/Targeted_Phishing_Detect/pcapDecode/smtp-attachment.pcap"
+In [4]: f = rdpcap(path)
+In [5]: f[0].show()
+###[ Ethernet ]###
+  dst       = 00:01:e8:01:74:3a
+  src       = 00:21:59:0b:58:29
+  type      = 0x800
+###[ IP ]###
+     version   = 4
+     ihl       = 5
+     tos       = 0x0
+     len       = 60
+     id        = 48003
+     flags     = DF
+     frag      = 0
+     ttl       = 48
+     proto     = tcp
+     chksum    = 0x584e
+     src       = 193.93.204.17
+     dst       = 128.3.41.120
+     \options   \
+###[ TCP ]###
+        sport     = 43690
+        dport     = smtp
+        seq       = 1830280710
+        ack       = 0
+        dataofs   = 10
+        reserved  = 0
+        flags     = S
+        window    = 5840
+        chksum    = 0x6fa8
+        urgptr    = 0
+        options   = [('MSS', 1460), ('SAckOK', b''), ('Timestamp', (792159621, 0)), ('NOP', None), ('WScale', 6)]
+</code></pre></div></div>
+
+<p>在这里，可以得到源地址和目的地址的MAC地址、IP地址等信息。由于SMTP协议是应用层协议，对应的是<code class="language-plaintext highlighter-rouge">Raw</code>数据段，而scapy包里面没有解析应用层协议的函数库；</p>
+
+<p>所以第一步是先将<code class="language-plaintext highlighter-rouge">Raw</code>段里面的数据先拿出来写到文件里面。下面的代码展示了如何将邮件的原始形式写到<code class="language-plaintext highlighter-rouge">out.txt</code>文件里。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># encoding:utf-8
+from scapy.all import *
+from scapy.utils import PcapReader
+import json
+
+pcap_path = "/Users/dingxiong/Collentions/Paper/Graduation-project/Targeted_Phishing_Detect/pcapDecode/smtp-URL-click-many-links.pcap"
+f = rdpcap(pcap_path)
+content = ""
+for packet in f:
+    if 'Raw' in packet:
+        content += str(packet['Raw'])
+
+mail_path = "out.txt"
+p = open(mail_path, 'w')
+p.write(content)
+p.close()
+</code></pre></div></div>
+
+<p>需要注意的是，写到文件里的是命令交互和邮件主题等信息。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>220 mailgate.lbl.gov ESMTP
+EHLO biz207.inmotionhosting.com
+250-mailgate.lbl.gov
+250-8BITMIME
+250 SIZE 34603008
+MAIL FROM:&lt;0100015e2e2fdcbb-402c8fba-95e0-42dc-a91d-b5ef6a51c890-000000@amazonses.com&gt; SIZE=28579
+250 sender &lt;0100015e2e2fdcbb-402c8fba-95e0-42dc-a91d-b5ef6a51c890-000000@amazonses.com&gt; ok
+RCPT TO:&lt;mhlubenow@lbl.gov&gt;
+250 recipient &lt;mhlubenow@lbl.gov&gt; ok
+DATA
+354 go ahead
+Received: from a8-94.smtp-out.amazonses.com ([54.240.8.94]:38654)
+	by biz207.inmotionhosting.com with esmtps (TLSv1:ECDHE-RSA-AES128-SHA:128)
+	(Exim 4.87)
+	(envelope-from &lt;0100015e2e2fdcbb-402c8fba-95e0-42dc-a91d-b5ef6a51c890-000000@amazonses.com&gt;)
+	id 1dmgbN-0042GE-Sl
+	for cuppajoe@nowhearthismusic.com; Tue, 29 Aug 2017 06:30:54 -0700
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1504013444;
+	h=Date:To:From:Reply-To:Subject:Message-ID:List-Unsubscribe:MIME-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
+	bh=QdWaGpoAb1B4/aoIi+PpndDVUulMWZzyr3Fqa/14o54=;
+	b=V656PG1uIJngO+HvKqeFvB9jrjvQ0hlLKMxz2r1B7ftccJ6kQ2qh4L+UP9acyj50
+	BK39/iYyX/DZYvpE7wXDx3lHXr7LhMtJL30Bwl29ZaNCUgou58qymt/ybuUtKcOX7bz
+	Guan6HTUugzFOoFBayOh7DrgWNGcQyg2dEjINAn8=
+Date: Tue, 29 Aug 2017 13:30:42 +0000
+To: Now Hear This Music &lt;cuppajoe@nowhearthismusic.com&gt;
+From: Battle of Santiago &lt;hi@battleofsantiago.com&gt;
+Reply-To: Battle of Santiago &lt;hi@battleofsantiago.com&gt;
+Subject: Battle of Santiago
+Message-ID: &lt;0100015e2e2fdcbb-402c8fba-95e0-42dc-a91d-b5ef6a51c890-000000@email.amazonses.com&gt;
+X-Mailer: Sendy (https://sendy.co)
+List-Unsubscribe: &lt;http://madefrompencilcrayon.netfirms.com/MWPC_2016/sendy/unsubscribe/FetHVLuCSM0C3jeJlI5j763tMtLJCanWq4892Ehr4EwqGvo/yOptwB9yUq892AzeTG8JkjFQ/PGnbJ8nuga9gHxDsCGDzAg&gt;
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="b1_2147de51de0aabf46d06eb94f08ce055"
+Content-Transfer-Encoding: 8bit
+X-SES-Outgoing: 2017.08.29-54.240.8.94
+Feedback-ID: 1.us-east-1.UFvt2iEQDxTgV18UkLMUb4FwLmpkmlVdGwRmqrZypdU=:AmazonSES
+X-Spam-Status: No, score=-1.9
+X-Spam-Score: -18
+X-Spam-Bar: -
+X-Ham-Report: Spam detection software, running on the system "biz207.inmotionhosting.com",
+ has NOT identified this incoming email as spam.  The original
+ message has been attached to this so you can view it or label
+ similar future email.  If you have any questions, see
+ root\@localhost for details.
+ 
+ Content preview:  Hello This month we're announcing our new fall dates for North
+    America - we can't wait to see you all! We're also looking forward to our
+    tour plans in 2018 and we're excited to announce we have joined the Riot
+   Artists roster who also book Dakha Brakha, Betty Bonifassi, and the Afro-Cuban
+    All Stars. [...] 
+ 
+ Content analysis details:   (-1.9 points, 5.0 required)
+ 。。。
+ 。。。
+ 。。。
+ &lt;img src="http://madefrompencilcrayon.netfirms.com/MWPC_2016/sendy/t/PGnbJ8nuga9gHxDsCGDzAg/vvCUoBmjHDseFeE5VlHx7g" alt="" style="width:1px;height:1px;"/&gt;
+
+
+
+--b1_2147de51de0aabf46d06eb94f08ce055--
+.
+250 ok:  Message 87090557 accepted
+QUIT
+221 mailgate.lbl.gov
+</code></pre></div></div>
+
+<h2 id="0x2-将邮件主题使用mailparser函数库转化为json等格式的邮件">0x2 将邮件主题使用mailparser函数库转化为json等格式的邮件</h2>
+
+<p>mailparser是可以将邮件的原始数据转化为json等格式的更可读的邮件形式，参见<a href="https://github.com/SpamScope/mail-parser">mailparser</a>。也有命令行的形式。可以从多种形式里面读取文件。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import mailparser
+
+mail = mailparser.parse_from_bytes(byte_mail)
+mail = mailparser.parse_from_file(f)
+mail = mailparser.parse_from_file_msg(outlook_mail)
+mail = mailparser.parse_from_file_obj(fp)
+mail = mailparser.parse_from_string(raw_mail)
+</code></pre></div></div>
+
+<p>经过这个函数库之后，就可以直接将原始的邮件形式转化为更可读的形式，可以包括邮件的很多信息，如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mail.attachments: list of all attachments
+mail.body
+mail.date: datetime object in UTC
+mail.defects: defect RFC not compliance
+mail.defects_categories: only defects categories
+mail.delivered_to
+mail.from_
+mail.get_server_ipaddress(trust="my_server_mail_trust")
+mail.headers
+mail.mail: tokenized mail in a object
+mail.message: email.message.Message object
+mail.message_as_string: message as string
+mail.message_id
+mail.received
+mail.subject
+mail.text_plain: only text plain mail parts in a list
+mail.text_html: only text html mail parts in a list
+mail.to
+mail.to_domains
+mail.timezone: returns the timezone, offset from UTC
+mail_partial: returns only the mains parts of emails
+</code></pre></div></div>
+
+<p>所以可以将邮件的主题、正文、附件等信息获取到字典里面，以供后面的研究。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import mailparser
+import os
+
+path = "/Users/dingxiong/Collentions/Paper/Graduation-project/我的坚果云/Targeted_Phishing_Detect/pcapDecode/mail.txt"
+f = mailparser.parse_from_file(path)
+mail = {}
+
+try:
+    mail['subject'] = f.subject
+    mail['body'] = f.body
+    mail['from'] = f.from_
+    mail['to'] = f.to
+    mail['attachments'] = f.attachments
+except:
+    pass
+
+mail_path = "/Users/dingxiong/Collentions/Paper/Graduation-project/我的坚果云/Targeted_Phishing_Detect/pcapDecode/test.txt"
+f = open(mail_path, 'w')
+f.write(str(mail))
+f.close()
+</code></pre></div></div>
+
+<h2 id="0x3-感悟">0x3 感悟</h2>
+
+<blockquote>
+  <p>本来是一个很简单的pcap包解析为邮件的代码，却写了很久的时间，这里面首先对pcap包认识不够清楚，另一方面对python库关于邮件的解析也没有积累，所以基本上找遍了GitHub（关键字分别为:pcap smtp, smtp pcap, mail pcap, pcap mail等，但基本上都找不到），所以在这里，如何检索也是一个很重要的问题。基本上我们现在遇到的所有问题，之前总会有人做过，我们需要做的就是找到它，然后去理解，如果确实找不到，要不是方法不正确，要不是就是自己可以去完成的一件事了。</p>
+</blockquote>
+
+<p>毕业遥遥无期，但依然要努力去解决每一个小问题。</p>
+
